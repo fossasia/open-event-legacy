@@ -1,5 +1,5 @@
 FROM python:2-slim
-MAINTAINER Niranjan Rajendran <niranjan94@yahoo.com>
+MAINTAINER Niranjan Rajendran <me@niranjan.io>
 
 
 ARG COMMIT_HASH
@@ -8,7 +8,7 @@ ARG REPOSITORY
 
 ENV COMMIT_HASH ${COMMIT_HASH:-null}
 ENV BRANCH ${BRANCH:-master}
-ENV REPOSITORY ${REPOSITORY:-https://github.com/fossasia/open-event-orga-server.git}
+ENV REPOSITORY ${REPOSITORY:-https://github.com/fossasia/open-event-legacy.git}
 
 # apt-get update
 RUN apt-get clean -y && apt-get update -y

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 FROM centos
-MAINTAINER Niranjan Rajendran <niranjan94@yahoo.com>
+MAINTAINER Niranjan Rajendran <me@niranjan.io>
 RUN yum -y install /usr/bin/ps nfs-utils && yum clean all
 RUN mkdir -p /data
 ADD run_nfs.sh /usr/local/bin/

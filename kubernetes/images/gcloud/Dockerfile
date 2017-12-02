@@ -1,5 +1,5 @@
 FROM debian:jessie-slim
-MAINTAINER Niranjan Rajendran <niranjan94@yahoo.com>
+MAINTAINER Niranjan Rajendran <me@niranjan.io>
 
 RUN apt-get clean -y && apt-get update -y
 RUN apt-get install -y curl apt-transport-https
