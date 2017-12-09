@@ -313,15 +313,20 @@ def save_tickets(tickets_data, event):
     :return:
     """
     ticket_ids = []
+    to_save=False
     for ticket_data in tickets_data:
-        if ticket_data['id']:
+        if ticket_data['name']:
             with db.session.no_autoflush:
-                ticket = Ticket.query.filter_by(id=ticket_data['id'], event_id=event.id).first()
+                ticket = Ticket.query.filter_by(name=ticket_data['name'], event_id=event.id).first()
+                if ticket is None:
+                    ticket = Ticket(event=event)
+                    to_save=True
+                elif Ticket.query.filter_by(name=ticket_data['name'], event_id=event.id).count()>1:
+                    to_save=False
+
                 ticket_tags = db.session.query(ticket_tags_table).filter_by(ticket_id=ticket.id)
                 if ticket_tags.first():
                     ticket_tags.delete()
-        else:
-            ticket = Ticket(event=event)
 
         ticket.name = ticket_data['name']
         ticket.quantity = ticket_data['quantity'] if ticket_data['quantity'] != '' else 100
@@ -342,9 +347,9 @@ def save_tickets(tickets_data, event):
             for tag_name in tag_names:
                 tag = TicketTag(name=tag_name, event_id=event.id)
                 db.session.add(tag)
-
-        db.session.add(ticket)
-        ticket_ids.append(ticket.id)
+        if to_save:
+            db.session.add(ticket)
+            ticket_ids.append(ticket.id)
 
     with db.session.no_autoflush:
         unwanted_tickets = Ticket.query.filter(~Ticket.id.in_(ticket_ids)).filter_by(event_id=event.id).all()
