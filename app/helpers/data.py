@@ -423,6 +423,7 @@ class DataManager(object):
                 trigger_new_session_notifications(session.id, event_id=event_id)
 
             session.title = form.get('title', '')
+            session.comments = form.get('comments', '')
             session.subtitle = form.get('subtitle', '')
             session.long_abstract = form.get('long_abstract', '')
             session.short_abstract = form.get('short_abstract', '')
