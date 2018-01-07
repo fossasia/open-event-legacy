@@ -422,6 +422,12 @@ class TicketingManager(object):
             holders_lastnames = form.getlist('holders[lastname]')
             holders_ticket_ids = form.getlist('holders[ticket_id]')
             holders_emails = form.getlist('holders[email]')
+            holders_occupations = form.getlist('holders[occupation]')
+            holders_occupation_details = form.getlist('holders[occupation_detail]')
+            holders_expertises = form.getlist('holders[expertise]')
+            holders_genders = form.getlist('holders[gender]')
+            holders_welcome_receptions = form.getlist('holders[welcome_reception]')
+            holders_recruitments = form.getlist('holders[recruitment]')
 
             for i, firstname in enumerate(holders_firstnames):
                 data = {
@@ -431,6 +437,12 @@ class TicketingManager(object):
                 holder_user = DataGetter.get_or_create_user_by_email(holders_emails[i], data)
                 ticket_holder = TicketHolder(firstname=data['firstname'],
                                              lastname=data['lastname'],
+                                             occupation=holders_occupations[i],
+                                             occupation_detail=holders_occupation_details[i],
+                                             expertise=holders_expertises[i],
+                                             gender=holders_genders[i],
+                                             welcome_reception=holders_welcome_receptions[i],
+                                             recruitment=holders_recruitments[i],
                                              ticket_id=int(holders_ticket_ids[i]),
                                              email=holder_user.email,
                                              order_id=order.id)
