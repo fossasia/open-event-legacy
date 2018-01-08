@@ -141,14 +141,125 @@
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
-                         {% if loop.index == 1 %}
+                            {% if loop.index == 1 %}
                              <div class="form-group">
                                 <label for="{{ loop.index }}" class="col-sm-4 control-label"> Autofill </label>
                                 <div class = "col-sm-4 ">
                                     <input type="checkbox"  data-ticket-type="{{ ticket_order.ticket.name }}" class="form-control autofill-checkbox" id="{{ outer_loop.index}}-{{ loop.index }}">
                                 </div>
                              </div>
-                        {% endif %}
+                            {% endif %}
+
+                            <!-- hard coding fields only for fossasia 2018 -->
+                            {% if order.event.id == 275 %}
+                            <div class="form-group">
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[occupation]"
+                                       class="col-sm-4 control-label">{{ _("You are a") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control"
+                                           name="holders[occupation]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[occupation]" required>
+                                        <option value="student">Student/Researcher</option>
+                                        <option value="teacher">Teacher/Professor</option>
+                                        <option value="engineer">Developer/Engineer</option>
+                                        <option value="community leader">Community/Leader</option>
+                                        <option value="manager">Manager/Head of Office</option>
+                                        <option value="founder">Founder/CEO</option>
+                                        <option value="govt rep">Government Representative</option>
+                                        <option value="ngo rep">NGO Representative</option>
+                                        <option value="executive">VC/Executive</option>
+                                        <option value="sales rep">Sales/Senior Sales Representative</option>
+                                        <option value="recruiter">Recruiter</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[occupation_detail]"
+                                       class="col-sm-4 control-label">{{ _("Company/ organization/ school") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control"
+                                           name="holders[occupation_detail]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[occupation_detail]" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[expertise]"
+                                       class="col-sm-4 control-label">{{ _("Area of expertise") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control"
+                                           name="holders[expertise]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[expertise]" required>
+                                        <option value="application_development">Application Development</option>
+                                        <option value="application_maintaining">Application Maintaining</option>
+                                        <option value="hardware">Hardware</option>
+                                        <option value="machine learning and ai">Machine Learning and AI</option>
+                                        <option value="kernel">Kernel</option>
+                                        <option value="database">Database/option>
+                                        <option value="cloud">Cloud</option>
+                                        <option value="cybersecurity">Cybersecurity</option>
+                                        <option value="blockchain">Blockchain</option>
+                                        <option value="network sys admin">Network/ System Administration</option>
+                                        <option value="design or UI">Design/ User Interface</option>
+                                        <option value="sales and marketing">Sales and Marketing</option>
+                                        <option value="training">Training and Consulting</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="text-transform: none;text-align: left;" class="col-sm-10 col-sm-offset-1 control-label">We want to improve the gender balance in tech communities. Please help us to understand how we are doing.</label>
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[gender]"
+                                       class="col-sm-4 control-label">{{ _("Gender") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control"
+                                           name="holders[gender]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[gender]" required>
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
+                                        <option value="other">Other</option>
+                                        <option value="no answer">Don't want to answer</option>
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[welcome_reception]"
+                                       class="col-sm-10 col-sm-offset-1 control-label" style="text-transform: none;text-align: left;">{{ _("Would you like to join the free welcome reception and career booth crawl (CV drop-in) on Thursday 22nd March opening at 12 pm?") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <select class="form-control"
+                                           name="holders[welcome_reception]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[welcome_reception]" required>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                        <option value="maybe">Maybe</option>
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ outer_loop.index }}-{{ loop.index }}-holders[recruitment]"
+                                       class="col-sm-10 col-sm-offset-1 control-label" style="text-transform: none;text-align: left;">{{ _("Would you like to receive recruitment notifications/news from our partners?") }} <span
+                                        class="required">*</span></label>
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <select class="form-control"
+                                           name="holders[recruitment]"
+                                           id="{{ outer_loop.index }}-{{ loop.index }}-holders[recruitment]" required>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            {% endif %}
                         {% endfor %}
                     {% endfor %}
                 </div>

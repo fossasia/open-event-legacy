@@ -22,6 +22,12 @@ class TicketHolder(db.Model):
     order = db.relationship('Order', backref='ticket_holders')
     ticket = db.relationship('Ticket', backref='ticket_holders')
     checked_in = db.Column(db.Boolean, default=False)
+    occupation = db.Column(db.String)
+    occupation_detail = db.Column(db.String)
+    expertise = db.Column(db.String)
+    gender = db.Column(db.String)
+    welcome_reception = db.Column(db.String)
+    recruitment = db.Column(db.String)
 
     def __init__(self,
                  firstname=None,
@@ -31,6 +37,12 @@ class TicketHolder(db.Model):
                  city=None,
                  state=None,
                  country=None,
+                 occupation=None,
+                 occupation_detail=None,
+                 expertise=None,
+                 gender=None,
+                 welcome_reception=None,
+                 recruitment=None,
                  ticket_id=None,
                  checked_in=False,
                  order_id=None):
@@ -40,6 +52,12 @@ class TicketHolder(db.Model):
         self.city = city
         self.address = address
         self.state = state
+        self.occupation = occupation
+        self.occupation_detail = occupation_detail
+        self.expertise = expertise
+        self.gender = gender
+        self.welcome_reception = welcome_reception
+        self.recruitment = recruitment
         self.ticket_id = ticket_id
         self.country = country
         self.order_id = order_id
@@ -90,4 +108,10 @@ class TicketHolder(db.Model):
                 'city': self.city,
                 'address': self.address,
                 'state': self.state,
+                'occupation': self.occupation,
+                'occupation_detail': self.occupation_detail,
+                'expertise': self.expertise,
+                'gender': self.gender,
+                'welcome_reception': self.welcome_reception,
+                'recruitment': self.recruitment,
                 'country': self.country}
