@@ -98,7 +98,7 @@ def save_speaker(request, event_id=None, speaker=None, user=None, no_name=False)
     speaker.github = trim_get_form(request.form, 'github', speaker.github)
     speaker.linkedin = trim_get_form(request.form, 'linkedin', speaker.linkedin)
     speaker.organisation = trim_get_form(request.form, 'organisation', speaker.organisation)
-    speaker.featured = True if trim_get_form(request.form, 'featured', speaker.featured) == 'true' else False
+    speaker.featured = True if request.form.get('featured', speaker.featured) == 'true' else False
     speaker.position = trim_get_form(request.form, 'position', speaker.position)
     speaker.country = trim_get_form(request.form, 'country', speaker.country)
     speaker.city = trim_get_form(request.form, 'city', speaker.city)
