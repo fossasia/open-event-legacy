@@ -692,7 +692,9 @@ function initializeInteractables() {
 
     $microlocations = $microlocationsHolder.find(".microlocation");
 
-    interact(".session")
+
+
+    interact(".session.scheduled")
         .draggable({
             // enable inertial throwing
             inertia: false,
@@ -732,8 +734,48 @@ function initializeInteractables() {
             }
         });
 
-
     interact(".session")
+        .draggable({
+            // enable inertial throwing
+            inertia: false,
+            // enable autoScroll
+            autoScroll: {
+                margin: 50,
+                distance: 5,
+                interval: 10
+            },
+            restrict: {
+                restriction: ".scheduler-holder"
+            },
+            // call this function on every dragmove event
+            onmove: function (event) {
+                var $sessionElement = $(event.target),
+                    x = (parseFloat($sessionElement.data('x')) || 0) + event.dx,
+                    y = (parseFloat($sessionElement.data('y')) || 0) + event.dy;
+
+                $sessionElement.css("-webkit-transform", "translate(" + x + "px, " + y + "px)");
+                $sessionElement.css("transform", "translate(" + x + "px, " + y + "px)");
+
+                $sessionElement.data('x', x);
+                $sessionElement.data('y', y);
+
+                $sessionElement.data("temp-top", roundOffToMultiple($sessionElement.offset().top - $(".microlocations.x1").offset().top));
+
+                if (isSessionOverTimeline($sessionElement)) {
+                    updateSessionTimeOnTooltip($sessionElement);
+                } else {
+                    resetTooltip($sessionElement);
+                }
+
+            },
+            // call this function on every dragend event
+            onend: function (event) {
+
+            }
+        });
+
+
+    interact(".session.scheduled")
         .resizable({
             preserveAspectRatio: false,
             enabled: true,
@@ -808,8 +850,7 @@ function initializeInteractables() {
             if (!$sessionElement.hasClass("scheduled")) {
                 $sessionElement.css({
                     "-webkit-transform": "",
-                    "transform": "",
-                    "background-color": ""
+                    "transform": ""
                 }).removeData("x").removeData("y");
                 resetTooltip($sessionElement);
             }
