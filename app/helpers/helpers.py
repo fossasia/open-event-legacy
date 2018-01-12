@@ -67,6 +67,11 @@ def get_event_id():
     result = re.search('event/[0-9]*', url)
     return result.group(0).split('/')[1]
 
+def get_or_default_string(array, index):
+    return array[index] if len(array) > index else ''
+
+def get_or_default_int(array, index):
+    return array[index] if len(array) > index else 0
 
 #########
 # Mails #

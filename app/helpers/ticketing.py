@@ -11,7 +11,8 @@ from app.helpers.data import DataManager
 from app.helpers.data import save_to_db
 from app.helpers.data_getter import DataGetter
 from app.helpers.helpers import string_empty, send_email_for_after_purchase, get_count, \
-    send_notif_for_after_purchase, send_email_after_cancel_ticket
+    send_notif_for_after_purchase, send_email_after_cancel_ticket, get_or_default_string, \
+    get_or_default_int
 from app.helpers.notification_email_triggers import trigger_after_purchase_notifications
 from app.helpers.payment import StripePaymentsManager, represents_int, PayPalPaymentsManager
 from app.models import db
@@ -432,18 +433,21 @@ class TicketingManager(object):
             for i, firstname in enumerate(holders_firstnames):
                 data = {
                     'firstname': firstname,
-                    'lastname': holders_lastnames[i]
+                    'lastname': get_or_default_string(holders_lastnames, i)
                 }
-                holder_user = DataGetter.get_or_create_user_by_email(holders_emails[i], data)
+                holder_user = DataGetter.get_or_create_user_by_email(
+                        get_or_default_string(holders_emails, i),
+                        data
+                    )
                 ticket_holder = TicketHolder(firstname=data['firstname'],
                                              lastname=data['lastname'],
-                                             occupation=holders_occupations[i],
-                                             occupation_detail=holders_occupation_details[i],
-                                             expertise=holders_expertises[i],
-                                             gender=holders_genders[i],
-                                             welcome_reception=holders_welcome_receptions[i],
-                                             recruitment=holders_recruitments[i],
-                                             ticket_id=int(holders_ticket_ids[i]),
+                                             occupation=get_or_default_string(holders_occupations, i),
+                                             occupation_detail=get_or_default_string(holders_occupation_details, i),
+                                             expertise=get_or_default_string(holders_expertises, i),
+                                             gender=get_or_default_string(holders_genders, i),
+                                             welcome_reception=get_or_default_string(holders_welcome_receptions, i),
+                                             recruitment=get_or_default_string(holders_recruitments, i),
+                                             ticket_id=int(get_or_default_int(holders_ticket_ids, i)),
                                              email=holder_user.email,
                                              order_id=order.id)
                 if data['firstname'] == '' or data['lastname'] == '' or holder_user.email == '':
