@@ -112,7 +112,7 @@ def export_attendee_csv_task(event_id):
     filename = "attendees-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(AttendeeCsv.export(event_id))
+        temp_file.write(AttendeeCsv.export(event_id).encode('utf8'))
     attendee_csv_file = UploadedFile(file_path=file_path, filename=filename)
     attendee_csv_url = upload(attendee_csv_file, UPLOAD_PATHS['exports'][
                               'csv'].format(event_id=event_id))
@@ -129,7 +129,7 @@ def export_order_csv_task(event_id):
     filename = "order-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(OrderCsv.export(event_id))
+        temp_file.write(OrderCsv.export(event_id).encode('utf8'))
     order_csv_file = UploadedFile(file_path=file_path, filename=filename)
     order_csv_url = upload(order_csv_file, UPLOAD_PATHS['exports']['csv'].format(event_id=event_id))
     return order_csv_url
@@ -145,7 +145,7 @@ def export_session_csv_task(event_id):
     filename = "session-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(SessionCsv.export(event_id))
+        temp_file.write(SessionCsv.export(event_id).encode('utf8'))
     session_csv_file = UploadedFile(file_path=file_path, filename=filename)
     session_csv_url = upload(session_csv_file, UPLOAD_PATHS['exports'][
                              'csv'].format(event_id=event_id))
@@ -162,7 +162,7 @@ def export_speaker_csv_task(event_id):
     filename = "speaker-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(SpeakerCsv.export(event_id))
+        temp_file.write(SpeakerCsv.export(event_id).encode('utf8'))
     speaker_csv_file = UploadedFile(file_path=file_path, filename=filename)
     speaker_csv_url = upload(speaker_csv_file, UPLOAD_PATHS['exports'][
                              'csv'].format(event_id=event_id))
