@@ -6,8 +6,8 @@ class SpeakerCsv:
     @staticmethod
     def export(event_id):
         speakers = DataGetter.get_speakers(event_id)
-        headers = 'Speaker Name, Speaker Email, Speaker Session(s), \
-                Speaker Mobile, Speaker Organisation, Speaker Position'
+        headers = ['Speaker Name', 'Speaker Email', 'Speaker Session(s)',
+                'Speaker Mobile', 'Speaker Organisation', 'Speaker Position']
         rows = [headers]
         for speaker in speakers:
             column = [speaker.name if speaker.name else '', speaker.email if speaker.email else '']
@@ -20,8 +20,6 @@ class SpeakerCsv:
             column.append(speaker.mobile if speaker.mobile else '')
             column.append(speaker.organisation if speaker.organisation else '')
             column.append(speaker.position if speaker.position else '')
-            rows.append(','.join(column))
+            rows.append(column)
 
-        csv_content = '\n'.join(rows)
-
-        return csv_content
+        return rows

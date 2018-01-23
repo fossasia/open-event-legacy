@@ -2,6 +2,7 @@ import requests
 import os
 import errno
 import uuid
+import csv
 from flask import current_app as app
 from marrow.mailer import Mailer, Message
 from app import celery
@@ -145,7 +146,11 @@ def export_session_csv_task(event_id):
     filename = "session-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(SessionCsv.export(event_id).encode('utf8'))
+        writer = csv.writer(temp_file)
+        content = SessionCsv.export(event_id)
+        for row in content:
+            row=[s.encode('utf-8') for s in row]
+            writer.writerow(row)
     session_csv_file = UploadedFile(file_path=file_path, filename=filename)
     session_csv_url = upload(session_csv_file, UPLOAD_PATHS['exports'][
                              'csv'].format(event_id=event_id))
@@ -162,7 +167,11 @@ def export_speaker_csv_task(event_id):
     filename = "speaker-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(SpeakerCsv.export(event_id).encode('utf8'))
+        writer = csv.writer(temp_file)
+        content = SpeakerCsv.export(event_id)
+        for row in content:
+            row=[s.encode('utf-8') for s in row]
+            writer.writerow(row)
     speaker_csv_file = UploadedFile(file_path=file_path, filename=filename)
     speaker_csv_url = upload(speaker_csv_file, UPLOAD_PATHS['exports'][
                              'csv'].format(event_id=event_id))

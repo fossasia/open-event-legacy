@@ -6,8 +6,8 @@ class SessionCsv:
     @staticmethod
     def export(event_id):
         sessions = DataGetter.get_sessions_by_event_id(event_id)
-        headers = 'Session Title, Session Speakers, \
-            Session Track, Session Abstract, Email Sent'
+        headers = ['Session Title', 'Session Speakers',
+            'Session Track', 'Session Abstract', 'Email Sent']
         rows = [headers]
         for session in sessions:
             if not session.deleted_at:
@@ -21,8 +21,6 @@ class SessionCsv:
                 column.append(session.track.name if session.track.name else '')
                 column.append(strip_tags(session.short_abstract) if session.short_abstract else '')
                 column.append('Yes' if session.state_email_sent else 'No')
-                rows.append(','.join(column))
+                rows.append(column)
 
-        csv_content = '\n'.join(rows)
-
-        return csv_content
+        return rows
