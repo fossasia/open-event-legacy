@@ -13,11 +13,12 @@ class SessionCsv:
             if not session.deleted_at:
                 column = [session.title + ' (' + session.state + ')' if session.title else '']
                 if session.speakers:
-                    inSession = ''
+                    inSession = '\"'
                     for speaker in session.speakers:
                         if speaker.name:
-                            inSession += (speaker.name + ', ')
-                    column.append(inSession[:-2])
+                            inSession += (speaker.name + '\n')
+                    inSession += '\"'
+                    column.append(inSession)
                 column.append(session.track.name if session.track.name else '')
                 column.append(strip_tags(session.short_abstract) if session.short_abstract else '')
                 column.append('Yes' if session.state_email_sent else 'No')
