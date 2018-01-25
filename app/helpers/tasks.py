@@ -113,7 +113,11 @@ def export_attendee_csv_task(event_id):
     filename = "attendees-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(AttendeeCsv.export(event_id).encode('utf8'))
+        writer = csv.writer(temp_file)
+        content = AttendeeCsv.export(event_id)
+        for row in content:
+            row=[s.encode('utf-8') for s in row]
+            writer.writerow(row)
     attendee_csv_file = UploadedFile(file_path=file_path, filename=filename)
     attendee_csv_url = upload(attendee_csv_file, UPLOAD_PATHS['exports'][
                               'csv'].format(event_id=event_id))
@@ -130,7 +134,11 @@ def export_order_csv_task(event_id):
     filename = "order-{}.csv".format(uuid.uuid1().hex)
     file_path = app.config['TEMP_UPLOADS_FOLDER'] + "/" + filename
     with open(file_path, "w") as temp_file:
-        temp_file.write(OrderCsv.export(event_id).encode('utf8'))
+        writer = csv.writer(temp_file)
+        content = OrderCsv.export(event_id)
+        for row in content:
+            row=[s.encode('utf-8') for s in row]
+            writer.writerow(row)
     order_csv_file = UploadedFile(file_path=file_path, filename=filename)
     order_csv_url = upload(order_csv_file, UPLOAD_PATHS['exports']['csv'].format(event_id=event_id))
     return order_csv_url

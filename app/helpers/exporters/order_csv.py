@@ -6,8 +6,8 @@ class OrderCsv:
     @staticmethod
     def export(event_id):
         orders = TicketingManager.get_orders(event_id)
-        headers = 'Order#,Order Date, Status, Payment Type, Total Amount, Quantity, Discount Code,' \
-            'First Name, Last Name, Email \n'
+        headers = ['Order#', 'Order Date', 'Status', 'Payment Type', 'Total Amount', 'Quantity',
+            'Discount Code', 'First Name', 'Last Name', 'Email']
 
         rows = [headers]
         for order in orders:
@@ -25,8 +25,6 @@ class OrderCsv:
                 column.append(str(order.user.user_detail.lastname.encode('utf-8'))
                               if order.user.user_detail and order.user.user_detail.lastname else '')
                 column.append(str(order.user.email) if order.user.email else '')
-                rows.append(','.join(column))
+                rows.append(column)
 
-        csv_content = '\n'.join(rows)
-
-        return csv_content
+        return rows

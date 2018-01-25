@@ -106,6 +106,12 @@ class TicketingManager(object):
                     'firstname': holder.firstname,
                     'lastname': holder.lastname,
                     'email': holder.email,
+                    'occupation': holder.occupation,
+                    'occupation_detail': holder.occupation_detail,
+                    'gender': holder.gender,
+                    'expertise': holder.expertise,
+                    'welcome_reception': holder.welcome_reception,
+                    'recruitment': holder.recruitment,
                     'country': holder.country,
                     'ticket_price': holder.ticket.price,
                     'discount': discount
@@ -130,13 +136,6 @@ class TicketingManager(object):
                     'completed_at': order.completed_at,
                     'created_at': order.created_at
                 }
-
-                if order.status == 'completed' or order.status == 'placed':
-                    order_holder['order_url'] = url_for('ticketing.view_order_after_payment',
-                                                        order_identifier=order.identifier)
-                else:
-                    order_holder['order_url'] = url_for('ticketing.show_transaction_error',
-                                                        order_identifier=order.identifier)
 
                 order_holder['by_whom'] = order.user.user_detail.fullname \
                     if order.user.user_detail and order.user.user_detail.fullname else order.user.email
