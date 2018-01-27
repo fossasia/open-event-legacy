@@ -20,7 +20,6 @@ Our chat channel is on Gitter here: [gitter.im/fossasia/open-event-server](https
 A demo version is automatically deployed from our repositories:
 * Deployment from the master branch - [open-event.herokuapp.com](http://open-event.herokuapp.com/)
 * Deployment from the development branch - [open-event-dev.herokuapp.com](http://open-event-dev.herokuapp.com/)
-* Developer documentation gh-pages - [dev.eventyay.com](http://dev.eventyay.com/)
 
 ## Installation
 
