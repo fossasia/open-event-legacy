@@ -7,7 +7,7 @@ The Open Event Orga Server enables organizers to manage events from concerts to 
 [![Gemnasium](https://img.shields.io/gemnasium/fossasia/open-event-legacy.svg?style=flat-square)](https://gemnasium.com/github.com/fossasia/open-event-legacy)
 [![Codacy branch grade](https://img.shields.io/codacy/grade/1ac554483fac462797ffa5a8b9adf2fa/master.svg?style=flat-square)](https://www.codacy.com/app/fossasia/open-event-legacy)
 [![Codecov branch](https://img.shields.io/codecov/c/github/fossasia/open-event-legacy/master.svg?style=flat-square&label=Codecov+Coverage)](https://codecov.io/gh/fossasia/open-event-legacy)
-[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-legacy)
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-server)
 
 ## Communication
 
