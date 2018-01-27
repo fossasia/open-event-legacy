@@ -122,7 +122,7 @@ sudo pip install docker-compose
 
 * Now that Docker Compose is setup in our Instance, we'll execute:
 ```sh
-git clone https://github.com/fossasia/open-event-orga-server.git && cd open-event-orga-server
+git clone https://github.com/fossasia/open-event-legacy.git && cd open-event-legacy
 sudo docker-compose build
 sudo docker-compose up
 ```

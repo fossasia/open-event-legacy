@@ -12,7 +12,7 @@ title: Docker
 * Clone the project and cd into it.
 
 ```bash
-git clone https://github.com/fossasia/open-event-orga-server.git && cd open-event-orga-server
+git clone https://github.com/fossasia/open-event-legacy.git && cd open-event-legacy
 ```
 
 * Then set the required `SERVER_NAME` environment variable. `SERVER_NAME` should the same as the domain on which the server is running and it should not include 'http', 'https',
