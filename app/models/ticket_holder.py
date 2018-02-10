@@ -28,6 +28,7 @@ class TicketHolder(db.Model):
     gender = db.Column(db.String)
     welcome_reception = db.Column(db.String)
     recruitment = db.Column(db.String)
+    unesco_hackathon = db.Column(db.String)
 
     def __init__(self,
                  firstname=None,
@@ -43,6 +44,7 @@ class TicketHolder(db.Model):
                  gender=None,
                  welcome_reception=None,
                  recruitment=None,
+                 unesco_hackathon=None,
                  ticket_id=None,
                  checked_in=False,
                  order_id=None):
@@ -58,6 +60,7 @@ class TicketHolder(db.Model):
         self.gender = gender
         self.welcome_reception = welcome_reception
         self.recruitment = recruitment
+        self.unesco_hackathon = unesco_hackathon
         self.ticket_id = ticket_id
         self.country = country
         self.order_id = order_id
@@ -114,4 +117,5 @@ class TicketHolder(db.Model):
                 'gender': self.gender,
                 'welcome_reception': self.welcome_reception,
                 'recruitment': self.recruitment,
+                'unesco_hackathon': self.unesco_hackathon,
                 'country': self.country}
