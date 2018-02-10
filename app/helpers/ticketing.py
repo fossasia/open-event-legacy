@@ -112,6 +112,7 @@ class TicketingManager(object):
                     'expertise': holder.expertise,
                     'welcome_reception': holder.welcome_reception,
                     'recruitment': holder.recruitment,
+                    'unesco_hackathon': holder.unesco_hackathon,
                     'country': holder.country,
                     'ticket_price': holder.ticket.price,
                     'discount': discount
@@ -428,6 +429,7 @@ class TicketingManager(object):
             holders_genders = form.getlist('holders[gender]')
             holders_welcome_receptions = form.getlist('holders[welcome_reception]')
             holders_recruitments = form.getlist('holders[recruitment]')
+            holders_unesco_hackathon = form.getlist('holders[unesco_hackathon]')
 
             for i, firstname in enumerate(holders_firstnames):
                 data = {
@@ -446,6 +448,7 @@ class TicketingManager(object):
                                              gender=get_or_default_string(holders_genders, i),
                                              welcome_reception=get_or_default_string(holders_welcome_receptions, i),
                                              recruitment=get_or_default_string(holders_recruitments, i),
+                                             unesco_hackathon=get_or_default_string(holders_unesco_hackathon, i),
                                              ticket_id=int(get_or_default_int(holders_ticket_ids, i)),
                                              email=holder_user.email,
                                              order_id=order.id)
