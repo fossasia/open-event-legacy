@@ -116,7 +116,6 @@ def export_attendee_csv_task(event_id):
         writer = csv.writer(temp_file)
         content = AttendeeCsv.export(event_id)
         for row in content:
-            row=[s.encode('utf-8') for s in row]
             writer.writerow(row)
     attendee_csv_file = UploadedFile(file_path=file_path, filename=filename)
     attendee_csv_url = upload(attendee_csv_file, UPLOAD_PATHS['exports'][
@@ -137,7 +136,6 @@ def export_order_csv_task(event_id):
         writer = csv.writer(temp_file)
         content = OrderCsv.export(event_id)
         for row in content:
-            row=[s.encode('utf-8') for s in row]
             writer.writerow(row)
     order_csv_file = UploadedFile(file_path=file_path, filename=filename)
     order_csv_url = upload(order_csv_file, UPLOAD_PATHS['exports']['csv'].format(event_id=event_id))
