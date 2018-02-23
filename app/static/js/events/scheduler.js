@@ -212,6 +212,8 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     } else {
         sessionRefObject = getSessionFromReference(sessionRef, $microlocationsHolder);
     }
+    console.log(sessionRefObject);
+    var durationBeforeScheduled = moment.duration(sessionRefObject.session.end_time.diff(sessionRefObject.session.start_time)).asMinutes();
 
     if (!sessionRefObject) {
         logError("addSessionToTimeline", sessionRef);
@@ -226,6 +228,17 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     var oldMicrolocation = (_.isNull(sessionRefObject.session.microlocation) ? 0 : sessionRefObject.session.microlocation.id);
     var newMicrolocation = null;
 
+    console.log(sessionRefObject.session.session_type && durationBeforeScheduled == 0)
+    if (sessionRefObject.session.session_type && durationBeforeScheduled == 0) {
+        var sessionTypeDuration = sessionRefObject.session.session_type.length.split(":");
+        sessionRefObject.session.duration = (+sessionTypeDuration[0]) * 60 + (+sessionTypeDuration[1]);
+    } else {
+        sessionRefObject.session.duration = moment.duration(sessionRefObject.session.end_time.diff(sessionRefObject.session.start_time)).asMinutes();
+    }
+    sessionRefObject.$sessionElement.css("height", minutesToPixels(sessionRefObject.session.duration) + "px");
+    console.log("Duration from type", sessionRefObject.session.duration);
+
+    console.log("Going for update");
     if (!isUndefinedOrNull(position)) {
         sessionRefObject.session.top = position.top;
         sessionRefObject.session.microlocation = {
@@ -240,6 +253,8 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
             sessionRefObject.session = updateSessionTime(sessionRefObject.$sessionElement);
         }
     }
+    console.log("Updated Time");
+    console.log(sessionRefObject);
 
     sessionRefObject.$sessionElement.css({
         "-webkit-transform": "",
@@ -251,18 +266,13 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     delete  sessionRefObject.session.start_time.isReset;
     delete  sessionRefObject.session.end_time.isReset;
 
-    if (sessionRefObject.session.session_type) {
-        var sessionTypeDuration = sessionRefObject.session.session_type.length.split(":");
-        sessionRefObject.session.duration = (+sessionTypeDuration[0]) * 60 + (+sessionTypeDuration[1]);
-    }
-
     sessionRefObject.$sessionElement.data("temp-top", sessionRefObject.session.top);
     sessionRefObject.$sessionElement.css("top", sessionRefObject.session.top + "px");
     sessionRefObject.$sessionElement.css("height", minutesToPixels(sessionRefObject.session.duration) + "px");
     $microlocationsHolder.find(".microlocation[data-microlocation-id=" + sessionRefObject.session.microlocation.id + "] > .microlocation-inner").append(sessionRefObject.$sessionElement);
 
 
-    updateSessionTimeOnTooltip(sessionRefObject.$sessionElement);
+    updateSessionTimeOnTooltip(sessionRefObject.$sessionElement, durationBeforeScheduled == 0);
     updateColor(sessionRefObject.$sessionElement, sessionRefObject.session.track);
 
     var $mobileSessionElement = $(mobileSessionTemplate);
@@ -308,6 +318,8 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     if(sessionRefObject.session.hasOwnProperty('track') && !_.isNull(sessionRefObject.session.track)) {
         $tracksTimeline.find(".mobile-microlocation[data-track-id=" + sessionRefObject.session.track.id + "] > .mobile-sessions-holder").append($mobileSessionElement.clone());
     }
+
+    console.log("Something");
 
     if (isUndefinedOrNull(shouldBroadcast) || shouldBroadcast) {
         if (!sessionRefObject.newElement) {
@@ -497,10 +509,10 @@ function isSessionOverTimeline($sessionElement) {
  * Update the session's time on it's tooltip and display it.
  * @param {jQuery} $sessionElement the target session element
  */
-function updateSessionTimeOnTooltip($sessionElement) {
+function updateSessionTimeOnTooltip($sessionElement, $isNewlyScheduled) {
     var topTime = moment.utc({hour: dayLevelTime.start.hours, minute: dayLevelTime.start.minutes});
     var mins = pixelsToMinutes($sessionElement.outerHeight(false));
-    if ($sessionElement.data("session").session_type) {
+    if ($sessionElement.data("session").session_type && $isNewlyScheduled) {
         var sessionTypeDuration = $sessionElement.data("session").session_type.length.split(":");
         mins = (+sessionTypeDuration[0]) * 60 + (+sessionTypeDuration[1]);
     }
@@ -542,12 +554,13 @@ function updateSessionTime($sessionElement, session) {
     }
 
     var day = session.start_time.format("Do MMMM YYYY");
-    var dayIndex = _.indexOf(days, day);
+    var dayIndex = _.indexOf(_.sortBy(days), day);
 
     var selectedDate = moment($('.date-change-btn.active').text(), "Do MMMM YYYY");
     var topTime = moment.utc({hour: dayLevelTime.start.hours, minute: dayLevelTime.start.minutes});
     var mins = pixelsToMinutes($sessionElement.outerHeight(false));
     var topInterval = pixelsToMinutes($sessionElement.data("temp-top"), true);
+    console.log("mins", mins);
 
     var newStartTime = _.cloneDeep(topTime.add(topInterval, 'm'));
     var newEndTime = topTime.add(mins, "m");
@@ -573,7 +586,7 @@ function updateSessionTime($sessionElement, session) {
             }
             var dayString = session.start_time.format("Do MMMM YYYY");
 
-            var dayIndex1 = _.indexOf(days, dayString);
+            var dayIndex1 = _.indexOf(_.sortBy(days), dayString);
             if (_.isArray(sessionsStore[dayIndex1])) {
                 sessionsStore[dayIndex1].push(session);
             } else {
@@ -722,7 +735,7 @@ function initializeInteractables() {
                 $sessionElement.data("temp-top", roundOffToMultiple($sessionElement.offset().top - $(".microlocations.x1").offset().top));
 
                 if (isSessionOverTimeline($sessionElement)) {
-                    updateSessionTimeOnTooltip($sessionElement);
+                    updateSessionTimeOnTooltip($sessionElement, false);
                 } else {
                     resetTooltip($sessionElement);
                 }
@@ -762,7 +775,7 @@ function initializeInteractables() {
                 $sessionElement.data("temp-top", roundOffToMultiple($sessionElement.offset().top - $(".microlocations.x1").offset().top));
 
                 if (isSessionOverTimeline($sessionElement)) {
-                    updateSessionTimeOnTooltip($sessionElement);
+                    updateSessionTimeOnTooltip($sessionElement, false);
                 } else {
                     resetTooltip($sessionElement);
                 }
@@ -793,7 +806,7 @@ function initializeInteractables() {
                 }
 
                 $(event.target).ellipsis();
-                updateSessionTimeOnTooltip($(event.target));
+                updateSessionTimeOnTooltip($(event.target), false);
             }
         })
         .on("resizeend", function (event) {
@@ -875,6 +888,11 @@ function processMicrolocationSession(microlocations, sessions, callback) {
 
             session = _.cloneDeep(session);
 
+            // remove timezone info since all calculation is in UTC,
+            // so we assume the date time was stored in 00:00 UTC
+            session.start_time = session.start_time.split("+")[0]+"+00:00";
+            session.end_time = session.end_time.split("+")[0]+"+00:00";
+
             var startTime = moment.utc(session.start_time);
             var endTime = moment.utc(session.end_time);
 
@@ -916,7 +934,7 @@ function processMicrolocationSession(microlocations, sessions, callback) {
             session.duration = Math.abs(duration.asMinutes());
             session.top = top;
 
-            var dayIndex = _.indexOf(days, dayString);
+            var dayIndex = _.indexOf(_.sortBy(days), dayString);
             if (_.isArray(sessionsStore[dayIndex])) {
                 sessionsStore[dayIndex].push(session);
             } else {
@@ -983,7 +1001,8 @@ function loadMicrolocationsToTimeline(day) {
     var least_hours = 24;
     var max_hours = 0;
     var max_minutes = 0;
-    var dayIndex = _.indexOf(days, day);
+    var dayIndex = _.indexOf(_.sortBy(days), day);
+    console.log(days, day);
 
     if (isReadOnly()) {
         _.each(sessionsStore[dayIndex], function (session) {
