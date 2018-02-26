@@ -17,8 +17,6 @@ event_scheduler = Blueprint('event_scheduler', __name__, url_prefix='/events/<ev
 @event_scheduler.route('/')
 @can_access
 def display_view(event_id):
-    if login.current_user.is_coorganizer(event_id):
-        abort(404)
     sessions = DataGetter.get_sessions_by_event_id(event_id)
     event = DataGetter.get_event(event_id)
     if not event.has_session_speakers:
@@ -30,8 +28,6 @@ def display_view(event_id):
 @event_scheduler.route('/publish/')
 @can_access
 def publish(event_id):
-    if login.current_user.is_coorganizer(event_id):
-        abort(404)
     event = DataGetter.get_event(event_id)
     event.schedule_published_on = datetime.now()
     save_to_db(event, "Event schedule published")
@@ -42,8 +38,6 @@ def publish(event_id):
 @event_scheduler.route('/unpublish/')
 @can_access
 def unpublish(event_id):
-    if login.current_user.is_coorganizer(event_id):
-        abort(404)
     event = DataGetter.get_event(event_id)
     event.schedule_published_on = None
     save_to_db(event, "Event schedule unpublished")

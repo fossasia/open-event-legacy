@@ -212,7 +212,6 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     } else {
         sessionRefObject = getSessionFromReference(sessionRef, $microlocationsHolder);
     }
-    console.log(sessionRefObject);
     var durationBeforeScheduled = moment.duration(sessionRefObject.session.end_time.diff(sessionRefObject.session.start_time)).asMinutes();
 
     if (!sessionRefObject) {
@@ -228,7 +227,6 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     var oldMicrolocation = (_.isNull(sessionRefObject.session.microlocation) ? 0 : sessionRefObject.session.microlocation.id);
     var newMicrolocation = null;
 
-    console.log(sessionRefObject.session.session_type && durationBeforeScheduled == 0)
     if (sessionRefObject.session.session_type && durationBeforeScheduled == 0) {
         var sessionTypeDuration = sessionRefObject.session.session_type.length.split(":");
         sessionRefObject.session.duration = (+sessionTypeDuration[0]) * 60 + (+sessionTypeDuration[1]);
@@ -236,9 +234,7 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
         sessionRefObject.session.duration = moment.duration(sessionRefObject.session.end_time.diff(sessionRefObject.session.start_time)).asMinutes();
     }
     sessionRefObject.$sessionElement.css("height", minutesToPixels(sessionRefObject.session.duration) + "px");
-    console.log("Duration from type", sessionRefObject.session.duration);
 
-    console.log("Going for update");
     if (!isUndefinedOrNull(position)) {
         sessionRefObject.session.top = position.top;
         sessionRefObject.session.microlocation = {
@@ -253,8 +249,6 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
             sessionRefObject.session = updateSessionTime(sessionRefObject.$sessionElement);
         }
     }
-    console.log("Updated Time");
-    console.log(sessionRefObject);
 
     sessionRefObject.$sessionElement.css({
         "-webkit-transform": "",
@@ -318,8 +312,6 @@ function addSessionToTimeline(sessionRef, position, shouldBroadcast) {
     if(sessionRefObject.session.hasOwnProperty('track') && !_.isNull(sessionRefObject.session.track)) {
         $tracksTimeline.find(".mobile-microlocation[data-track-id=" + sessionRefObject.session.track.id + "] > .mobile-sessions-holder").append($mobileSessionElement.clone());
     }
-
-    console.log("Something");
 
     if (isUndefinedOrNull(shouldBroadcast) || shouldBroadcast) {
         if (!sessionRefObject.newElement) {
@@ -560,7 +552,6 @@ function updateSessionTime($sessionElement, session) {
     var topTime = moment.utc({hour: dayLevelTime.start.hours, minute: dayLevelTime.start.minutes});
     var mins = pixelsToMinutes($sessionElement.outerHeight(false));
     var topInterval = pixelsToMinutes($sessionElement.data("temp-top"), true);
-    console.log("mins", mins);
 
     var newStartTime = _.cloneDeep(topTime.add(topInterval, 'm'));
     var newEndTime = topTime.add(mins, "m");
@@ -1002,7 +993,6 @@ function loadMicrolocationsToTimeline(day) {
     var max_hours = 0;
     var max_minutes = 0;
     var dayIndex = _.indexOf(_.sortBy(days), day);
-    console.log(days, day);
 
     if (isReadOnly()) {
         _.each(sessionsStore[dayIndex], function (session) {

@@ -239,7 +239,7 @@ class Event(db.Model):
 
     def get_staff_roles(self):
         """returns only roles which are staff i.e. not attendee"""
-        return [role for role in self.roles if role.role.name != ATTENDEE]
+        return [role for role in self.roles if role.role and role.role.name != ATTENDEE]
 
     def get_tz_aware_time(self, time):
         return pytz.timezone(self.timezone).localize(time)
