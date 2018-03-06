@@ -16,8 +16,8 @@ install:
 env:
 - APP_CONFIG="config.TestingConfig" PATH=$PATH:${HOME}/google-cloud-sdk/bin CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_script:
-  - psql -c 'create database test;' -U postgres
-  - export DATABASE_URL=postgresql://postgres@localhost:5432/test
+  - psql -c "user john with password 'oevent';" -U postgres
+  - psql -c 'create database oevent with owner=john; -U postgres
   - python manage.py initialize_db -c open_event_test_user@fossasia.org:fossasia
 # command to run tests
 script:

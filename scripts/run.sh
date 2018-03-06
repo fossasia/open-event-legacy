@@ -1,5 +1,5 @@
 #!/bin/bash
-export DATABASE_URL=postgresql://open_event_user:start@127.0.0.1:5432/test
+cp .env.sample .env
 postgres -D /usr/local/pgsql/data >logfile 2>&1 &
 service postgresql restart
 python create_db.py

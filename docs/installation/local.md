@@ -90,11 +90,10 @@ sudo npm install bower -g
 bower install
 ```
 
-* **Step 4** - Create application environment variables.
+* **Step 4** - Copying .env.sample to .env.
 
 ```sh
-export DATABASE_URL=postgresql:///oevent
-export SERVER_NAME=localhost:5000
+cp .env.sample .env
 ```
 
 The URL is short, thank to the resemble of Postgres user and OS user.
