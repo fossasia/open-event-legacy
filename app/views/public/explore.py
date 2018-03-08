@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Blueprint
 from flask import render_template
-from flask import request, redirect, url_for, jsonify
+from flask import request, redirect, url_for, jsonify, escape
 from flask.ext.restplus import abort
 from flask_restplus import marshal
 from requests import ConnectionError
@@ -50,7 +50,7 @@ def erase_from_dict(d, k):
 
 def clean_dict(d):
     d = dict(d)
-    return dict((k, v) for k, v in d.iteritems() if v)
+    return dict((k, escape(v)) for k, v in d.iteritems() if v)
 
 
 def get_coordinates(location_name):
@@ -108,7 +108,7 @@ def explore_view(location):
     placeholder_images = DataGetter.get_event_default_images()
     custom_placeholder = DataGetter.get_custom_placeholders()
     location = deslugify(location)
-    query = request.args.get('query', '')
+    query = escape(request.args.get('query', ''))
 
     filtering = {'privacy': 'public', 'state': 'Published'}
     start, end = None, None
@@ -123,20 +123,22 @@ def explore_view(location):
     if location and location != 'world':
         filtering['__event_search_location'] = location
     if word:
-        filtering['__event_contains'] = word
+        filtering['__event_contains'] = escape(word)
     if category:
-        filtering['topic'] = category
+        filtering['topic'] = escape(category)
     if sub_category:
-        filtering['sub_topic'] = sub_category
+        filtering['sub_topic'] = escape(sub_category)
     if event_type:
-        filtering['type'] = event_type
+        filtering['type'] = escape(event_type)
     if start:
         filtering['__event_start_time_gt'] = start
     if end:
         filtering['__event_end_time_lt'] = end
 
     results = marshal(get_paginated(**filtering), EVENT_PAGINATED)
+
     filters = clean_dict(request.args.items())
+
 
     custom_placeholder_serializable = {}
     for custom_placeholder_item in custom_placeholder:
