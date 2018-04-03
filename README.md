@@ -183,9 +183,7 @@ pip install -r requirements/tests.txt
 * Open Event uses Postgres database for testing. So set `DATABASE_URL` as a postgres database. Here is an example.
 
 ```sh
-export DATABASE_URL=postgresql://test_user:test@127.0.0.1:5432/opev_test
-# format is postgresql://USERNAME:PASSWORD@ADDRESS/DATABASE_NAME
-export APP_CONFIG=config.TestingConfig
+cp .env.sample .env
 ```
 
 * Then go to the project directory and run the following command:

@@ -56,8 +56,8 @@ psql
 * When inside psql, create a user for open-event and then using the user create the database.
 
 ```sql
-create user open_event_user with password 'test';
-create database test with owner=open_event_user;
+create user john with password 'test';
+create database oevent with owner=john;
 ```
 
 * Once database is created, exit the psql shell with `\q` followed by ENTER.
@@ -74,7 +74,7 @@ bower install
 * **Step 4** - Create application environment variables.
 
 ```sh
-export DATABASE_URL=postgresql://open_event_user:start@127.0.0.1:5432/test
+cp .env.sample .env
 ```
 
 

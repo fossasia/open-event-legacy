@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
+from envparse import env
 
+env.read_envfile()
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 VERSION_NAME = '1.0.0-alpha.10'
@@ -47,7 +49,7 @@ class Config(object):
     CSRF_ENABLED = True
     SERVER_NAME = os.getenv('SERVER_NAME')
     CORS_HEADERS = 'Content-Type'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
+    SQLALCHEMY_DATABASE_URI = env('DATABASE_URL', default=None)
     DATABASE_QUERY_TIMEOUT = 0.1
 
     if not SQLALCHEMY_DATABASE_URI:
