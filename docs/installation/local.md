@@ -42,9 +42,20 @@ cd open-event-legacy
 
 * **Step 1** - Install python requirements. You need to be present into the root directoryt  of the project.
 
+Installing the dependencies System Wide
+
 ```sh
 sudo -H pip install -r requirements.txt
 ```
+
+Installing and Running through Virtual Environment
+
+```sh
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 hint: You may need to upgrade your pip version and install following packages if you encounter errors while installing the requirements.
 ```sh
 sudo apt-get install python-dev
