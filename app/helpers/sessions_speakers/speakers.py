@@ -104,7 +104,7 @@ def save_speaker(request, event_id=None, speaker=None, user=None, no_name=False)
     speaker.city = trim_get_form(request.form, 'city', speaker.city)
     speaker.gender = trim_get_form(request.form, 'gender', speaker.gender)
     if trim_get_form(request.form, 'heard_from', None) == "Other":
-        speaker.heard_from = trim_get_form(request.form, 'other_text', speaker.other_text)
+        speaker.heard_from = trim_get_form(request.form, 'other_text', speaker.heard_from)
     else:
         speaker.heard_from = trim_get_form(request.form, 'heard_from', speaker.heard_from)
     speaker.sponsorship_required = trim_get_form(request.form, 'sponsorship_required', speaker.sponsorship_required)
