@@ -4,7 +4,7 @@ import pycountry
 import requests
 import stripe
 from flask import Blueprint
-from flask import redirect, url_for, request, jsonify, make_response, flash
+from flask import redirect, url_for, request, jsonify, make_response, flash, escape
 from flask import render_template
 from flask.ext.restplus import abort
 from xhtml2pdf import pisa
@@ -93,7 +93,7 @@ def view_order(order_identifier):
 @ticketing.route('/<order_identifier>/view/')
 def view_order_after_payment(order_identifier):
     order = TicketingManager.get_and_set_expiry(order_identifier)
-    email = request.args.get('email', '')
+    email = escape(request.args.get('email', ''))
     if not order or (order.status != 'completed' and order.status != 'placed'):
         abort(404)
     fees = DataGetter.get_fee_settings_by_currency(order.event.payment_currency)
@@ -121,7 +121,7 @@ def view_order_after_payment_pdf(order_identifier):
 @ticketing.route('/<order_identifier>/view/tickets/pdf/')
 def view_order_tickets_after_payment_pdf(order_identifier):
     order = TicketingManager.get_and_set_expiry(order_identifier)
-    email = request.args.get('email', '')
+    email = escape(request.args.get('email', ''))
     if not order or (order.status != 'completed' and order.status != 'placed'):
         abort(404)
     pdf = create_pdf(render_template('gentelella/guest/ticketing/pdf/ticket.html', order=order, email=email))
@@ -183,7 +183,7 @@ def expire_order(order_identifier):
 
 @ticketing.route('/stripe/callback/')
 def stripe_callback():
-    code = request.args.get('code')
+    code = escape(request.args.get('code'))
     if code and code != "":
         data = {
             'client_secret': get_settings()['stripe_secret_key'],

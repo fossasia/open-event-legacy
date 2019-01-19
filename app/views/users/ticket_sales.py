@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 from flask import Blueprint
 from flask import abort, jsonify
-from flask import redirect, flash
+from flask import redirect, flash, escape
 from flask import request, render_template
 from flask import url_for
 
@@ -177,7 +177,7 @@ def display_orders(event_id, pdf=None):
         return (event, event_id, orders, discount_code)
     else:
         return render_template('gentelella/users/events/tickets/orders.html', event=event, event_id=event_id,
-                               orders=orders, from_date=from_date, to_date=to_date, discount_code=discount_code)
+                               orders=orders, from_date=escape(from_date), to_date=escape(to_date), discount_code=discount_code)
 
 
 @event_ticket_sales.route('/attendees/')
@@ -269,7 +269,7 @@ def display_attendees(event_id, pdf=None):
         return (event, event_id, holders, orders, ticket_names, selected_ticket)
     else:
         return render_template('gentelella/users/events/tickets/attendees.html', event=event,
-                               event_id=event_id, holders=holders, from_date=from_date, to_date=to_date,
+                               event_id=event_id, holders=holders, from_date=escape(from_date), to_date=escape(to_date),
                                ticket_names=ticket_names, selected_ticket=selected_ticket)
 
 

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from flask import Blueprint
 from flask import render_template
 from flask import request
-from flask import url_for
+from flask import url_for, escape
 from flask.ext import login
 from werkzeug.exceptions import abort
 from werkzeug.utils import redirect
@@ -90,8 +90,8 @@ def fees_by_events_view():
     return render_template('gentelella/super_admin/sales/fees.html',
                            fee_summary=fee_summary,
                            display_currency=display_currency,
-                           from_date=from_date,
-                           to_date=to_date,
+                           from_date=escape(from_date),
+                           to_date=escape(to_date),
                            tickets_total=tickets_total,
                            fee_total=fee_total,
                            navigation_bar=list_navbar())
@@ -117,11 +117,11 @@ def fees_status_view():
 
     return render_template('gentelella/super_admin/sales/fees_status.html',
                            display_currency=display_currency,
-                           from_date=from_date,
+                           from_date=escape(from_date),
                            current_date=datetime.now(),
                            overdue_date=datetime.now() + timedelta(days=15),
                            invoices=invoices,
-                           to_date=to_date,
+                           to_date=escape(to_date),
                            navigation_bar=list_navbar())
 
 
@@ -215,8 +215,8 @@ def sales_by_marketer_view(by_discount_code=False):
     return render_template('gentelella/super_admin/sales/by_marketer.html',
                            tickets_summary=tickets_summary,
                            display_currency=display_currency,
-                           from_date=from_date,
-                           to_date=to_date,
+                           from_date=escape(from_date),
+                           to_date=escape(to_date),
                            key_name='marketers' if not by_discount_code else 'discount codes',
                            orders_summary=orders_summary,
                            navigation_bar=list_navbar())
@@ -399,8 +399,8 @@ def sales_by_events_view(path):
             'gentelella/super_admin/sales/by_events.html',
             tickets_summary=tickets_summary_event_wise,
             display_currency=display_currency,
-            from_date=from_date,
-            to_date=to_date,
+            from_date=escape(from_date),
+            to_date=escape(to_date),
             path=path,
             orders_summary=orders_summary,
             navigation_bar=list_navbar())
@@ -409,8 +409,8 @@ def sales_by_events_view(path):
             'gentelella/super_admin/sales/by_organizer.html',
             tickets_summary=tickets_summary_organizer_wise,
             display_currency=display_currency,
-            from_date=from_date,
-            to_date=to_date,
+            from_date=escape(from_date),
+            to_date=escape(to_date),
             path=path,
             orders_summary=orders_summary,
             navigation_bar=list_navbar())
@@ -419,8 +419,8 @@ def sales_by_events_view(path):
             'gentelella/super_admin/sales/by_location.html',
             tickets_summary=tickets_summary_location_wise,
             display_currency=display_currency,
-            from_date=from_date,
-            to_date=to_date,
+            from_date=escape(from_date),
+            to_date=escape(to_date),
             path=path,
             orders_summary=orders_summary,
             navigation_bar=list_navbar())

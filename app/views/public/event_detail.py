@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 from flask import Blueprint
-from flask import request, url_for, flash, render_template, jsonify, make_response, current_app as app
+from flask import request, url_for, flash, escape, render_template, jsonify, make_response, current_app as app
 from flask.ext import login
 from flask.ext.restplus import abort
 from markupsafe import Markup
@@ -84,7 +84,7 @@ def display_event_detail_home(identifier):
             sponsors[int(sponsor.level)] = [sponsor]
 
     fees = DataGetter.get_fee_settings_by_currency(event.payment_currency)
-    code = request.args.get("code")
+    code = escape(request.args.get("code"))
     return render_template('gentelella/guest/event/details.html',
                            event=event,
                            sponsors=sponsors,
@@ -203,7 +203,7 @@ def display_event_schedule_xcal(identifier):
 
 @event_detail.route('/<identifier>/cfs/')
 def display_event_cfs(identifier, via_hash=False):
-    show_speaker_modal = request.args.get('show_speaker_modal', '')
+    show_speaker_modal = escape(request.args.get('show_speaker_modal', ''))
     event = get_published_event_or_abort(identifier)
     placeholder_images = DataGetter.get_event_default_images()
     if login.current_user.is_authenticated:

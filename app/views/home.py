@@ -8,7 +8,7 @@ from urllib2 import urlopen
 import geoip2.database
 from flask import Blueprint
 from flask import abort, render_template, current_app
-from flask import url_for, redirect, request, session, flash
+from flask import url_for, redirect, request, session, flash, escape
 from flask.ext import login
 from flask.ext.login import login_required
 from flask.ext.scrypt import generate_password_hash
@@ -25,7 +25,7 @@ from app.views.public.explore import erase_from_dict
 
 
 def intended_url():
-    return request.args.get('next') or url_for('.index')
+    return escape(request.args.get('next')) or url_for('.index')
 
 
 def record_user_login_logout(template, user):
@@ -36,6 +36,9 @@ def record_user_login_logout(template, user):
         **req_stats
     )
 
+def clean_dict(d):
+    d = dict(d)
+    return dict((k, escape(v)) for k, v in d.iteritems() if v)
 
 def str_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -205,8 +208,8 @@ def logout_view():
 @login_required
 def set_role():
     """Set user role method"""
-    id = request.args['id']
-    role = request.args['roles']
+    id = escape(request.args['id'])
+    role = escape(request.args['roles'])
     user = DataGetter.get_user(id)
     user.role = role
     save_to_db(user, "User Role updated")
@@ -220,8 +223,7 @@ def forbidden_view():
 
 @home_routes.route('/browse/')
 def browse_view():
-    params = request.args.items()
-    params = dict((k, v) for k, v in params if v)
+    params = clean_dict(request.args.items())
 
     def test_and_remove(key):
         if request.args.get(key) and request.args.get("query"):
@@ -240,7 +242,7 @@ def browse_view():
         except:
             country = "United States"
     else:
-        country = request.args.get("location")
+        country = escape(request.args.get("location"))
 
     test_and_remove("location")
     test_and_remove("category")
@@ -252,7 +254,7 @@ def browse_view():
 @home_routes.route('/check_email/', methods=('POST', 'GET'))
 def check_duplicate_email():
     if request.method == 'GET':
-        email = request.args['email']
+        email = escape(request.args['email'])
         user = DataGetter.get_user_by_email(email, no_flash=True)
         if user is None:
             return '200 OK'

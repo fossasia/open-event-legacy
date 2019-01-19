@@ -5,7 +5,7 @@ import os
 
 import geoip2.database
 from flask import Blueprint, current_app
-from flask import flash
+from flask import flash, escape
 from flask import jsonify, url_for, redirect, request, send_from_directory, \
     render_template, make_response, session
 from flask.ext import login
@@ -315,7 +315,7 @@ def run_migrations():
 
 
 def intended_url():
-    return request.args.get('next') or url_for('admin.index')
+    return escape(request.args.get('next')) or url_for('admin.index')
 
 
 @utils_routes.route('/robots.txt')
