@@ -28,7 +28,7 @@
                         <strong>{{ _("Paid Via") }}:</strong> PayPal<br>
                         <strong>Transaction ID:</strong> {{ order.transaction_id }}<br>
                     {% elif order.paid_via == 'stripe' %}
-                        <strong>{{ _("Card Nam") }}e:</strong> {{ order.brand }}<br>
+                        <strong>{{ _("Card Name") }}e:</strong> {{ order.brand }}<br>
                         <strong>{{ _("Card Number") }}:</strong> ***** {{ order.last4 }}<br>
                         <strong>Exp {{ _("Date") }}:</strong> {{ order.exp_month }}/{{ order.exp_year }}<br><br>
                     {% endif %}
